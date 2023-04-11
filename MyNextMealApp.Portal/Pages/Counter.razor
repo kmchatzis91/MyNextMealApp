@@ -1,0 +1,62 @@
+﻿@page "/counter"
+@using System.Diagnostics;
+@using MyNextMealApp.Models.Models;
+@inject HttpClient httpClient
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<br/>
+<br/>
+<br/>
+<br/>
+
+@foreach (var item in Areas)
+{
+    <div class="row row-cols-6">
+        <img class="col-3" src="@item.imgPath" style="width:200px; height:200px;"/>
+        <label class="col-3">@item.strArea</label>
+    </div>
+    
+}
+
+@code {
+    private string _path = "Area/GetAreas";
+    private List<Area>? _areas;
+
+    public List<Area>? Areas
+    {
+        get { return _areas; }
+        set { _areas = value; }
+    }
+
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    public Counter()
+    {
+        Areas = new List<Area>();
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Areas = await httpClient.GetFromJsonAsync<List<Area>>(_path);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in CaseLawPage/OnInitializedAsync => {ex.Message}");
+        }
+    }
+}

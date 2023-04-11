@@ -1,0 +1,123 @@
+﻿@page "/area"
+@using System.Diagnostics;
+@using MyNextMealApp.Models.Models;
+@using MyNextMealApp.Portal.Components.Page
+@using MyNextMealApp.Portal.Components.Skeleton
+@inject HttpClient httpClient
+
+@*HTML*@
+@if (IsLoading)
+{
+   <GridComponentSkeleton/>
+}
+else
+{
+    <div class="container-fluid">
+        <div class="row row-cols-12" style="margin-top:2%; margin-bottom:4%;">
+             <div class="col-md-12">
+                 <input class="form-control" 
+                        type="text" 
+                        placeholder="@Search" 
+                        style="text-align:center;" 
+                        @bind="SearchFilter" 
+                        @bind:event="oninput"/>
+             </div>
+        </div>
+
+        @if (Areas.Count() == 0)
+        {
+            <EmptyListViewComponent MessageCategory="Areas"/>
+        }
+
+        <div class="row row-cols-12" style="margin-bottom:2%;">
+            @foreach (var area in Areas.Where(i => IsItemVisible(i)))
+            {
+                if (counter != 0 && counter % 3 == 0)
+                {
+                    @:</div>
+                    @:<div class="row row-cols-12" style="margin-bottom:2%;">
+                }
+
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <AreaListViewComponent Area="@area"/>
+                    </div>
+                </div>
+
+                counter++;
+            }
+        </div>
+    </div>
+}
+
+@code {
+    #region Parameters, properties & fields
+    private string _path = "Area/GetAreas";
+    private string? Search = "Search...";
+    int counter = 0;
+    public bool IsLoading { get; private set; }
+    public string? SearchFilter { get; private set; }
+    private List<Area>? Areas;   
+    #endregion
+
+    #region Constructor
+    public AreaPage()
+    {      
+        try
+        {
+            IsLoading = false;
+            SearchFilter = string.Empty;
+            Areas = new List<Area>();
+        }
+        catch (Exception ex)
+        {                   
+            Debug.WriteLine($"Error in AreaPage/Constructor => {ex.Message}");
+        }    
+    }
+    #endregion
+
+    #region Methods
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            IsLoading = true;
+            await Task.Delay(1000);
+            Areas = await httpClient.GetFromJsonAsync<List<Area>>(_path);
+            IsLoading = false;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in AreaPage/OnInitializedAsync => {ex.Message}");
+        }     
+    }
+
+    public bool IsItemVisible(Area area)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(SearchFilter))
+            {
+                return true;
+            }
+
+            if (area.strArea.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            if (area.strArea.ToString().StartsWith(SearchFilter))
+            {
+                return true;
+            }
+
+            return false;
+        }
+        catch (Exception ex)
+        {                   
+           Debug.WriteLine($"Error in AreaPage/IsItemVisible => {ex.Message}");
+           return false;
+        }           
+    }
+    #endregion
+}

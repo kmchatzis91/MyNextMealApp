@@ -1,0 +1,90 @@
+﻿@using System.Diagnostics
+@using System.Text
+@using System.Text.Json
+@using Microsoft.AspNetCore
+@using System.Diagnostics.CodeAnalysis
+@using MyNextMealApp.Models.Models;
+@inject NavigationManager navigationManager
+
+@*CSS*@
+<style>
+    .card {
+        width: 98%;
+        height: 98%;
+        border-radius: 8px;
+        transition: transform .2s;
+        box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+    }
+
+        .card:hover {
+            cursor: pointer;
+            transform: scale(1.04);
+        }
+
+    .card-body {
+        text-align: center;
+        padding: 0;
+    }
+
+    .card-footer {
+        text-align: center;
+        font-family: Calibri;
+        padding: 0;
+    }
+</style>
+
+@*HTML*@
+<div class="card">
+    <div class="card-body" @onclick="OnAreaListViewComponentClicked">
+        <div class="row row-cols-12">
+            <div class="col-12 align-self-center" style="text-align:center;">
+                <img src="@Area.imgPath" style="width:60%; height:160px; border-radius:8px; margin:2%" oncontextmenu="return false;" />
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <div style="font-size:1em; font-family:Calibri; margin:2%; color:#000000;">
+            @Area.strArea
+        </div>
+    </div>
+</div>
+
+@code {
+    #region Parameters, properties & fields
+    [Parameter, AllowNull]
+    public Area Area { get; set; }
+    #endregion
+
+    #region Methods
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (Area == null)
+                return;
+
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in ImageListViewComponent/OnInitializedAsync => {ex.Message}");
+        }
+    }
+
+    private async Task OnAreaListViewComponentClicked()
+    {
+        try
+        {
+            if (Area != null)
+            {
+                //todo add navigation to meals page with parameter
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in ImageListViewComponent/OnImageComponentClicked => {ex.Message}");
+        }
+    }
+    #endregion
+}

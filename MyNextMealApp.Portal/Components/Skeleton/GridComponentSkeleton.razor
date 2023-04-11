@@ -1,0 +1,86 @@
+﻿@*@page "/GridComponentSkeleton"*@
+
+@*CSS*@
+<style>
+    .card {
+        width: 98%;
+        height: 98%;
+        border-radius: 8px;
+        box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+    }
+
+    .card-body {
+        text-align: center;
+        padding: 0;
+    }
+
+    .card-footer {
+        text-align: center;
+        padding: 0;
+    }
+</style>
+
+@*HTML*@
+@for (int i = 0; i <= 4; i++)
+{
+    <div class="row row-cols-12" style="margin-bottom:2%;">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text placeholder-glow" style="height:240px;">
+                        <span class="placeholder col-12"
+                          style="height:100%; border-top-left-radius:8px; border-top-right-radius:8px; padding:0;">
+                        </span>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <p class="card-text placeholder-glow" style="height:30px; margin:2%;">
+                        <span class="placeholder col-8"
+                          style="height:60%; border-radius:8px;">
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text placeholder-glow" style="height:240px;">
+                        <span class="placeholder col-12"
+                          style="height:100%; border-top-left-radius:8px; border-top-right-radius:8px; padding:0;">
+                        </span>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <p class="card-text placeholder-glow" style="height:30px; margin:2%;">
+                        <span class="placeholder col-8"
+                          style="height:60%; border-radius:8px;">
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text placeholder-glow" style="height:240px;">
+                        <span class="placeholder col-12"
+                          style="height:100%; border-top-left-radius:8px; border-top-right-radius:8px; padding:0;">
+                        </span>
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <p class="card-text placeholder-glow" style="height:30px; margin:2%;">
+                        <span class="placeholder col-8"
+                          style="height:60%; border-radius:8px;">
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+}

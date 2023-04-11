@@ -1,0 +1,31 @@
+﻿@using System.Diagnostics;
+@using System.Diagnostics.CodeAnalysis;
+
+@*HTML*@
+<div class="row row-cols-12" style="margin-top:4%;">
+    <div style="text-align:center;">
+        <label style="font-style:italic;">@MessageBody</label>
+    </div>
+</div>
+
+@code {
+    #region Parameters, properties & fields
+    [Parameter, AllowNull]
+    public string MessageCategory { get; set; }
+    public string? MessageBody { get; set; }
+    #endregion
+
+    #region Methods
+    protected override void OnInitialized()
+    {
+        try
+        {
+            MessageBody = $"No {MessageCategory} available...";
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in EmptyListComponent/OnInitialized => {ex.Message}");
+        }
+    }
+    #endregion
+}

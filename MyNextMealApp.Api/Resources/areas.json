@@ -1,0 +1,113 @@
+{
+"areas":
+    [
+        {
+        "imgPath": "resources/united-states.png",
+        "strArea": "American"
+        },
+        {
+        "imgPath": "resources/united-kingdom.png",
+        "strArea": "British"
+        },
+        {
+        "imgPath": "resources/canada.png",
+        "strArea": "Canadian"
+        },
+        {
+        "imgPath": "resources/china.png",
+        "strArea": "Chinese"
+        },
+        {
+        "imgPath": "resources/croatia.png",
+        "strArea": "Croatian"
+        },
+        {
+        "imgPath": "resources/germany.png",
+        "strArea": "Dutch"
+        },
+        {
+        "imgPath": "resources/egypt.png",
+        "strArea": "Egyptian"
+        },
+        {
+        "imgPath": "resources/france.png",
+        "strArea": "French"
+        },
+        {
+        "imgPath": "resources/greece.png",
+        "strArea": "Greek"
+        },
+        {
+        "imgPath": "resources/india.png",
+        "strArea": "Indian"
+        },
+        {
+        "imgPath": "resources/ireland.png",
+        "strArea": "Irish"
+        },
+        {
+        "imgPath": "resources/italy.png",
+        "strArea": "Italian"
+        },
+        {
+        "imgPath": "resources/jamaica.png",
+        "strArea": "Jamaican"
+        },
+        {
+        "imgPath": "resources/japan.png",
+        "strArea": "Japanese"
+        },
+        {
+        "imgPath": "resources/kenya.png",
+        "strArea": "Kenyan"
+        },
+        {
+        "imgPath": "resources/malaysia.png",
+        "strArea": "Malaysian"
+        },
+        {
+        "imgPath": "resources/mexico.png",
+        "strArea": "Mexican"
+        },
+        {
+        "imgPath": "resources/morocco.png",
+        "strArea": "Moroccan"
+        },
+        {
+        "imgPath": "resources/poland.png",
+        "strArea": "Polish"
+        },
+        {
+        "imgPath": "resources/portugal.png",
+        "strArea": "Portuguese"
+        },
+        {
+        "imgPath": "resources/russia.png",
+        "strArea": "Russian"
+        },
+        {
+        "imgPath": "resources/spain.png",
+        "strArea": "Spanish"
+        },
+        {
+        "imgPath": "resources/thailand.png",
+        "strArea": "Thai"
+        },
+        {
+        "imgPath": "resources/tunisia.png",
+        "strArea": "Tunisian"
+        },
+        {
+        "imgPath": "resources/turkey.png",
+        "strArea": "Turkish"
+        },
+        {
+        "imgPath": "resources/unknown.png",
+        "strArea": "Unknown"
+        },
+        {
+        "imgPath": "resources/vietnam.png",
+        "strArea": "Vietnamese"
+        }
+    ]
+}
