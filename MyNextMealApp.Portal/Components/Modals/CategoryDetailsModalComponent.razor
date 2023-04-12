@@ -1,0 +1,83 @@
+﻿@using System.Diagnostics
+@using System.Diagnostics.CodeAnalysis
+@using MyNextMealApp.Models.Models;
+
+@*HTML*@
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="align-self:center; text-align:center;">
+                <h2 class="modal-title" style="font-family:Calibri;">@Category?.strCategory</h2>
+            </div>
+            <div class="modal-body" style="align-self:center; text-align:center;">
+                <img src="@Category?.strCategoryThumb"
+                     style="width:100%; height:100%; border-radius:8px; margin:1%;"
+                     oncontextmenu="return false;" />
+            </div>
+            <div class="modal-body" style="align-self:center; text-align:start;">
+                <p style="font-family:Calibri; font-size:18px;">
+                    @Category?.strCategoryDescription
+                </p>
+            </div>
+            <div class="modal-footer" style="align-self:center; text-align:center;">
+                <button type="button"
+                        class="btn btn-primary"
+                        data-dismiss="modal"
+                        @onclick="() => Dismiss()">
+                    <i class="oi oi-delete" style="margin-right:2px;" />
+                    @Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    #region #region Parameters, properties & fields
+    [AllowNull]
+    public Category Category { get; set; }
+    private string ModalDisplay = "none;";
+    private string ModalClass = "";
+    private bool ShowBackdrop = false;
+    private string Close = "Close";
+    #endregion
+
+    #region Methods
+    public void Show(Category category)
+    {
+        try
+        {
+            Category = category;
+            ModalDisplay = "block;";
+            ModalClass = "show";
+            ShowBackdrop = true;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in CategoryDetailsModalComponent/Show => {ex.Message}");
+        }
+    }
+
+    public void Dismiss()
+    {
+        try
+        {
+            ModalDisplay = "none";
+            ModalClass = "";
+            ShowBackdrop = false;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in CategoryDetailsModalComponent/Dismiss => {ex.Message}");
+        }
+    }
+    #endregion
+}
+

@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore
 @using System.Diagnostics.CodeAnalysis
 @using MyNextMealApp.Models.Models;
+@using MyNextMealApp.Portal.Components.Modals;
 @inject NavigationManager navigationManager
 
 @*CSS*@
@@ -34,27 +35,39 @@
 </style>
 
 @*HTML*@
-<div class="card" @onclick="OnAreaListViewComponentClicked">
-    <div class="card-body">
+<div class="card">
+    <div class="card-header">
+        <div style="text-align:end;">
+            <i class="oi oi-eye" title="@Info" style="color:#2027be" @onclick="OnCategoryDetailsClicked" />
+        </div>
+    </div>
+    <div class="card-body" @onclick="OnCategoryListViewComponentClicked">
         <div class="row row-cols-12">
             <div class="col-12 align-self-center" style="text-align:center;">
-                <img src="@Area.imgPath"
+                <img src="@Category.strCategoryThumb"
                      style="width:60%; height:160px; border-radius:8px; margin:2%"
                      oncontextmenu="return false;" />
             </div>
         </div>
     </div>
-    <div class="card-footer">
+    <div class="card-footer" @onclick="OnCategoryListViewComponentClicked">
         <div style="font-size:1em; font-family:Calibri; margin:2%; color:#000000;">
-            @Area.strArea
+            @Category.strCategory
         </div>
     </div>
 </div>
 
+<CategoryDetailsModalComponent @ref="CategoryDetailsModalComponent" />
+
 @code {
     #region Parameters, properties & fields
     [Parameter, AllowNull]
-    public Area Area { get; set; }
+    public Category Category { get; set; }
+
+    [AllowNull]
+    public CategoryDetailsModalComponent CategoryDetailsModalComponent { get; set; }
+
+    private string Info = "Information";
     #endregion
 
     #region Methods
@@ -62,29 +75,44 @@
     {
         try
         {
-            if (Area == null)
+            if (Category == null)
                 return;
 
             StateHasChanged();
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error in ImageListViewComponent/OnInitializedAsync => {ex.Message}");
+            Debug.WriteLine($"Error in CategoryListViewComponent/OnInitializedAsync => {ex.Message}");
         }
     }
 
-    private async Task OnAreaListViewComponentClicked()
+    private async Task OnCategoryListViewComponentClicked()
     {
         try
         {
-            if (Area != null)
+            if (Category != null)
             {
                 //todo add navigation to meals page with parameter
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error in ImageListViewComponent/OnAreaListViewComponentClicked => {ex.Message}");
+            Debug.WriteLine($"Error in CategoryListViewComponent/OnCategoryListViewComponentClicked => {ex.Message}");
+        }
+    }
+
+    private void OnCategoryDetailsClicked()
+    {
+        try
+        {
+            if (Category != null)
+            {
+                CategoryDetailsModalComponent.Show(Category);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in CategoryListViewComponent/OnCategoryDetailsClicked => {ex.Message}");
         }
     }
     #endregion
