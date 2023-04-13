@@ -1,8 +1,10 @@
-﻿@page "/area"
+﻿@page "/meal/{Filter}/{Title}"
 @using System.Diagnostics;
 @using MyNextMealApp.Models.Models;
 @using MyNextMealApp.Portal.Components.Page
 @using MyNextMealApp.Portal.Components.Skeleton
+@using System.Diagnostics.CodeAnalysis;
+@using MyNextMealApp.Portal.Helpers;
 @inject HttpClient httpClient
 
 @*HTML*@
@@ -12,25 +14,25 @@
 }
 else
 {
-    <div class="container-fluid">
+     <div class="container-fluid">
         <div class="row row-cols-12" style="margin-top:2%; margin-bottom:4%;">
              <div class="col-md-12">
-                 <input class="form-control" 
-                        type="text" 
-                        placeholder="@Search" 
-                        style="text-align:center;" 
-                        @bind="SearchFilter" 
+                 <input class="form-control"
+                        type="text"
+                        placeholder="@Search"
+                        style="text-align:center;"
+                        @bind="SearchFilter"
                         @bind:event="oninput"/>
              </div>
         </div>
 
-        @if (Areas.Count() == 0)
+        @if (Meals.Count() == 0)
         {
-            <EmptyListViewComponent MessageCategory="Areas"/>
+            <EmptyListViewComponent MessageCategory="Meals"/>
         }
 
         <div class="row row-cols-12" style="margin-bottom:2%;">
-            @foreach (var area in Areas.Where(i => IsItemVisible(i)))
+            @foreach (var meal in Meals.Where(i => IsItemVisible(i)))
             {
                 if (counter != 0 && counter % 3 == 0)
                 {
@@ -40,7 +42,7 @@ else
 
                 <div class="col-md-4">
                     <div class="thumbnail">
-                        <AreaListViewComponent Area="@area"/>
+                        <MealListViewComponent Meal="@meal"/>
                     </div>
                 </div>
 
@@ -52,26 +54,32 @@ else
 
 @code {
     #region Parameters, properties & fields
-    private string _path = "Area/GetAreas";
+    [Parameter, AllowNull]
+    public string Filter { get; set; }
+
+    [Parameter, AllowNull]
+    public string Title { get; set; }
+
+    private string _path = "Meal";
     private string? Search = "Search...";
     int counter = 0;
     public bool IsLoading { get; private set; }
     public string? SearchFilter { get; private set; }
-    private List<Area>? Areas;   
+    private List<MealShort>? Meals;   
     #endregion
 
     #region Constructor
-    public AreaPage()
+    public MealPage()
     {      
         try
         {
             IsLoading = false;
             SearchFilter = string.Empty;
-            Areas = new List<Area>();
+            Meals = new List<MealShort>();
         }
         catch (Exception ex)
         {                   
-            Debug.WriteLine($"Error in AreaPage/Constructor => {ex.Message}");
+            Debug.WriteLine($"Error in MealPage/Constructor => {ex.Message}");
         }    
     }
     #endregion
@@ -81,18 +89,29 @@ else
     {
         try
         {
-            IsLoading = true;           
-            Areas = await httpClient.GetFromJsonAsync<List<Area>>(_path);
+            IsLoading = true;
+
+            if (Filter == Constants.Categories)
+            {
+                var filterByAreaPath = $"{_path}/GetMealsByCategory?category={Title}";
+                Meals = await httpClient.GetFromJsonAsync<List<MealShort>>(filterByAreaPath);               
+            }
+            else
+            {
+                var filterByCategoryPath = $"{_path}/GetMealsByArea?area={Title}";
+                Meals = await httpClient.GetFromJsonAsync<List<MealShort>>(filterByCategoryPath); 
+            }
+
             await Task.Delay(1000);
             IsLoading = false;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error in AreaPage/OnParametersSetAsync => {ex.Message}");
+            Debug.WriteLine($"Error in MealPage/OnParametersSetAsync => {ex.Message}");
         }     
     }
 
-    public bool IsItemVisible(Area area)
+    public bool IsItemVisible(MealShort meal)
     {
         try
         {
@@ -101,12 +120,12 @@ else
                 return true;
             }
 
-            if (area.strArea.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase))
+            if (meal.strMeal.Contains(SearchFilter, StringComparison.OrdinalIgnoreCase))
             {
                 return true;
             }
 
-            if (area.strArea.ToString().StartsWith(SearchFilter))
+            if (meal.strMeal.ToString().StartsWith(SearchFilter))
             {
                 return true;
             }
@@ -115,9 +134,10 @@ else
         }
         catch (Exception ex)
         {                   
-           Debug.WriteLine($"Error in AreaPage/IsItemVisible => {ex.Message}");
+           Debug.WriteLine($"Error in MealPage/IsItemVisible => {ex.Message}");
            return false;
         }           
     }
     #endregion
 }
+

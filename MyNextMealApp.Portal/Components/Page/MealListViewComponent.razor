@@ -4,7 +4,6 @@
 @using Microsoft.AspNetCore
 @using System.Diagnostics.CodeAnalysis
 @using MyNextMealApp.Models.Models;
-@using MyNextMealApp.Portal.Helpers;
 @inject NavigationManager navigationManager
 
 @*CSS*@
@@ -35,11 +34,11 @@
 </style>
 
 @*HTML*@
-<div class="card" @onclick="OnAreaListViewComponentClicked">
+<div class="card" @onclick="OnMealListViewComponentClicked">
     <div class="card-body">
         <div class="row row-cols-12">
             <div class="col-12 align-self-center" style="text-align:center;">
-                <img src="@Area.imgPath"
+                <img src="@Meal.strMealThumb"
                      style="width:60%; height:160px; border-radius:8px; margin:2%"
                      oncontextmenu="return false;" />
             </div>
@@ -47,7 +46,7 @@
     </div>
     <div class="card-footer">
         <div style="font-size:1em; font-family:Calibri; margin:2%; color:#000000;">
-            @Area.strArea
+            @Meal.strMeal
         </div>
     </div>
 </div>
@@ -55,7 +54,7 @@
 @code {
     #region Parameters, properties & fields
     [Parameter, AllowNull]
-    public Area Area { get; set; }
+    public MealShort Meal { get; set; }
     #endregion
 
     #region Methods
@@ -63,30 +62,31 @@
     {
         try
         {
-            if (Area == null)
+            if (Meal == null)
                 return;
 
             StateHasChanged();
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error in AreaListViewComponent/OnInitialized => {ex.Message}");
+            Debug.WriteLine($"Error in MealListViewComponent/OnInitialized => {ex.Message}");
         }
     }
 
-    private void OnAreaListViewComponentClicked()
+    private void OnMealListViewComponentClicked()
     {
         try
         {
-            if (Area != null)
+            if (Meal != null)
             {
-                navigationManager.NavigateTo($"meal/{Constants.Areas.ToString()}/{Area.strArea}");
+                //todo add navigation to mealDetails page with parameter
             }
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error in AreaListViewComponent/OnAreaListViewComponentClicked => {ex.Message}");
+            Debug.WriteLine($"Error in MealListViewComponent/OnMealListViewComponentClicked => {ex.Message}");
         }
     }
     #endregion
 }
+

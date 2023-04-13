@@ -5,6 +5,7 @@
 @using System.Diagnostics.CodeAnalysis
 @using MyNextMealApp.Models.Models;
 @using MyNextMealApp.Portal.Components.Modals;
+@using MyNextMealApp.Portal.Helpers;
 @inject NavigationManager navigationManager
 
 @*CSS*@
@@ -82,25 +83,9 @@
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error in CategoryListViewComponent/OnInitializedAsync => {ex.Message}");
+            Debug.WriteLine($"Error in CategoryListViewComponent/OnInitialized => {ex.Message}");
         }
     }
-
-    private async Task OnCategoryListViewComponentClicked()
-    {
-        try
-        {
-            if (Category != null)
-            {
-                //todo add navigation to meals page with parameter
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Error in CategoryListViewComponent/OnCategoryListViewComponentClicked => {ex.Message}");
-        }
-    }
-
     private void OnCategoryDetailsClicked()
     {
         try
@@ -115,5 +100,20 @@
             Debug.WriteLine($"Error in CategoryListViewComponent/OnCategoryDetailsClicked => {ex.Message}");
         }
     }
+
+    private void OnCategoryListViewComponentClicked()
+    {
+        try
+        {
+            if (Category != null)
+            {
+                navigationManager.NavigateTo($"meal/{Constants.Categories.ToString()}/{Category.strCategory}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in CategoryListViewComponent/OnCategoryListViewComponentClicked => {ex.Message}");
+        }
+    }  
     #endregion
 }

@@ -82,8 +82,8 @@ else
         try
         {
             IsLoading = true;
-            await Task.Delay(1000);
             Categories = await httpClient.GetFromJsonAsync<List<Category>>(_path);
+            await Task.Delay(1000);
             IsLoading = false;
         }
         catch (Exception ex)
