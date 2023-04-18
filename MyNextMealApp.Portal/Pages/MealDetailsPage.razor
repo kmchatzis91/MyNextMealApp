@@ -6,7 +6,25 @@
 @using System.Diagnostics.CodeAnalysis;
 @using MyNextMealApp.Portal.Helpers;
 @inject HttpClient httpClient
+@inject IJSRuntime JS
 
+@*CSS*@
+<style>
+    .youTube {
+        transition: transform .2s;
+    }
+
+        .youTube:hover {
+            cursor: pointer;
+            transform: scale(1.04);
+        }
+
+        .youTube a label:hover{
+            cursor: pointer;
+        }
+</style>
+
+@*HTML*@
 @if (IsLoading)
 {
     <LoadingComponentSkeleton />
@@ -29,6 +47,12 @@ else
                     </label>
                     @Meal.strInstructions
                 </p>
+                <div class="youTube" style="margin-top:4%;">
+                    <a href="@Meal.strYoutube" target="_blank" style="text-decoration:none;">
+                        <label>Watch on YouTube</label>
+                        <img src="resources/youtube-logo.png" style="width:6%; height:6%;" />
+                </a>
+                </div>              
             </div>
         </div>
         <div class="row row-cols-12">
@@ -240,6 +264,18 @@ else
         catch (Exception ex)
         {
             Debug.WriteLine($"Error in MealDetailsPage/AddIngredients => {ex.Message}");
+        }
+    }
+
+    private async Task OnYouTubeClicked()
+    {
+        try
+        {
+             await JS.InvokeAsync<object>("open", Meal.strYoutube, "_blank");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in MealDetailsPage/OnYouTubeClicked => {ex.Message}");
         }
     }
     #endregion
