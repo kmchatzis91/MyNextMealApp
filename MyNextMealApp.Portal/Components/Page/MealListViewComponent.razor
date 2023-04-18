@@ -79,7 +79,7 @@
         {
             if (Meal != null)
             {
-                //todo add navigation to mealDetails page with parameter
+                navigationManager.NavigateTo($"mealdetails/{Meal.idMeal}");
             }
         }
         catch (Exception ex)

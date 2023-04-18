@@ -1,0 +1,246 @@
+﻿@page "/mealdetails/{Id}"
+@using System.Diagnostics;
+@using MyNextMealApp.Models.Models;
+@using MyNextMealApp.Portal.Components.Page
+@using MyNextMealApp.Portal.Components.Skeleton
+@using System.Diagnostics.CodeAnalysis;
+@using MyNextMealApp.Portal.Helpers;
+@inject HttpClient httpClient
+
+@if (IsLoading)
+{
+    <LoadingComponentSkeleton />
+}
+else
+{
+    <div class="row row-cols-12" style="margin-top:4%;">
+        <div class="row row-cols-12">
+            <div class="col-6 align-self-center" style="text-align:center;">
+                <img src="@Meal.strMealThumb"
+                 style="width:90%; height:90%; border-radius:8px; margin:2%"
+                 oncontextmenu="return false;" />
+            </div>
+            <div class="col-6 align-self-center" style="text-align:center;">
+                <h1>@Meal.strMeal</h1>
+                <label>- @Meal.strCategory, @Meal.strArea -</label>
+                <p style="text-align:left; margin-top:4%;">
+                    <label style="font-weight:bold; margin-right:1%;">
+                        Instructions:
+                    </label>
+                    @Meal.strInstructions
+                </p>
+            </div>
+        </div>
+        <div class="row row-cols-12">
+            <div class="col-1"></div>
+            <div class="col-10">
+                <table class="table table-striped" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            <th>Ingredients</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Ingredients)
+                        {
+                            <tr>
+                                <td>@i</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+}
+
+@code {
+    #region Parameters, properties & fields
+    [Parameter, AllowNull]
+    public string Id { get; set; }
+
+    private string _path = "Meal";
+    public bool IsLoading { get; private set; }
+    private MealLong? Meal;
+    private List<string>? Ingredients;
+    #endregion
+
+    #region Constructor
+    public MealDetailsPage()
+    {
+        try
+        {
+            IsLoading = false;
+            Meal = new MealLong();
+            Ingredients = new List<string>();
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in MealDetailsPage/Constructor => {ex.Message}");
+        }
+    }
+    #endregion
+
+    #region Methods
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            IsLoading = true;
+
+            if (Id == "random")
+            {
+                var randomPath = $"{_path}/GetRandomMeal";
+                Meal = await httpClient.GetFromJsonAsync<MealLong>(randomPath);
+            }
+            else
+            {
+                var idPath = $"{_path}/GetMealById?id={Id}";
+                Meal = await httpClient.GetFromJsonAsync<MealLong>(idPath);
+            }
+
+            Ingredients.Clear();
+            AddIngredients(Meal);
+            await Task.Delay(1000);
+            IsLoading = false;
+
+            var ing = Ingredients;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in MealDetailsPage/OnParametersSetAsync => {ex.Message}");
+        }
+    }
+
+    private void AddIngredients(MealLong meal)
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(meal.strIngredient1) || !string.IsNullOrEmpty(meal.strMeasure1) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient1) || !string.IsNullOrWhiteSpace(meal.strMeasure1))
+            {
+                Ingredients.Add($"{meal.strMeasure1} - {meal.strIngredient1}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient2) || !string.IsNullOrEmpty(meal.strMeasure2) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient2) || !string.IsNullOrWhiteSpace(meal.strMeasure2))
+            {
+                Ingredients.Add($"{meal.strMeasure2} - {meal.strIngredient2}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient3) || !string.IsNullOrEmpty(meal.strMeasure3) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient3) || !string.IsNullOrWhiteSpace(meal.strMeasure3))
+            {
+                Ingredients.Add($"{meal.strMeasure3} - {meal.strIngredient3}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient4) || !string.IsNullOrEmpty(meal.strMeasure4) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient4) || !string.IsNullOrWhiteSpace(meal.strMeasure4))
+            {
+                Ingredients.Add($"{meal.strMeasure4} - {meal.strIngredient4}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient5) || !string.IsNullOrEmpty(meal.strMeasure5) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient5) || !string.IsNullOrWhiteSpace(meal.strMeasure5))
+            {
+                Ingredients.Add($"{meal.strMeasure5} - {meal.strIngredient5}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient6) || !string.IsNullOrEmpty(meal.strMeasure6) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient6) || !string.IsNullOrWhiteSpace(meal.strMeasure6))
+            {
+                Ingredients.Add($"{meal.strMeasure6} - {meal.strIngredient6}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient7) || !string.IsNullOrEmpty(meal.strMeasure7) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient7) || !string.IsNullOrWhiteSpace(meal.strMeasure7))
+            {
+                Ingredients.Add($"{meal.strMeasure7} - {meal.strIngredient7}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient8) || !string.IsNullOrEmpty(meal.strMeasure8) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient8) || !string.IsNullOrWhiteSpace(meal.strMeasure8))
+            {
+                Ingredients.Add($"{meal.strMeasure8} - {meal.strIngredient8}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient9) || !string.IsNullOrEmpty(meal.strMeasure9) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient9) || !string.IsNullOrWhiteSpace(meal.strMeasure9))
+            {
+                Ingredients.Add($"{meal.strMeasure9} - {meal.strIngredient9}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient10) || !string.IsNullOrEmpty(meal.strMeasure10) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient10) || !string.IsNullOrWhiteSpace(meal.strMeasure10))
+            {
+                Ingredients.Add($"{meal.strMeasure10} - {meal.strIngredient10}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient11) || !string.IsNullOrEmpty(meal.strMeasure11) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient11) || !string.IsNullOrWhiteSpace(meal.strMeasure11))
+            {
+                Ingredients.Add($"{meal.strMeasure11} {meal.strIngredient11}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient12) || !string.IsNullOrEmpty(meal.strMeasure12) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient12) || !string.IsNullOrWhiteSpace(meal.strMeasure12))
+            {
+                Ingredients.Add($"{meal.strMeasure12} - {meal.strIngredient12}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient13) || !string.IsNullOrEmpty(meal.strMeasure13) ||
+           !string.IsNullOrWhiteSpace(meal.strIngredient13) || !string.IsNullOrWhiteSpace(meal.strMeasure13))
+            {
+                Ingredients.Add($"{meal.strMeasure13} - {meal.strIngredient13}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient14) || !string.IsNullOrEmpty(meal.strMeasure14) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient14) || !string.IsNullOrWhiteSpace(meal.strMeasure14))
+            {
+                Ingredients.Add($"{meal.strMeasure14} - {meal.strIngredient14}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient15) || !string.IsNullOrEmpty(meal.strMeasure15) ||
+           !string.IsNullOrWhiteSpace(meal.strIngredient15) || !string.IsNullOrWhiteSpace(meal.strMeasure15))
+            {
+                Ingredients.Add($"{meal.strMeasure15} - {meal.strIngredient15}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient16) || !string.IsNullOrEmpty(meal.strMeasure16) ||
+           !string.IsNullOrWhiteSpace(meal.strIngredient16) || !string.IsNullOrWhiteSpace(meal.strMeasure16))
+            {
+                Ingredients.Add($"{meal.strMeasure16} - {meal.strIngredient16}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient17) || !string.IsNullOrEmpty(meal.strMeasure17) ||
+           !string.IsNullOrWhiteSpace(meal.strIngredient17) || !string.IsNullOrWhiteSpace(meal.strMeasure17))
+            {
+                Ingredients.Add($"{meal.strMeasure17} - {meal.strIngredient17}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient18) || !string.IsNullOrEmpty(meal.strMeasure18) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient18) || !string.IsNullOrWhiteSpace(meal.strMeasure18))
+            {
+                Ingredients.Add($"{meal.strMeasure18} - {meal.strIngredient18}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient19) || !string.IsNullOrEmpty(meal.strMeasure19) ||
+           !string.IsNullOrWhiteSpace(meal.strIngredient19) || !string.IsNullOrWhiteSpace(meal.strMeasure19))
+            {
+                Ingredients.Add($"{meal.strMeasure19} - {meal.strIngredient19}");
+            }
+
+            if (!string.IsNullOrEmpty(meal.strIngredient20) || !string.IsNullOrEmpty(meal.strMeasure20) ||
+            !string.IsNullOrWhiteSpace(meal.strIngredient20) || !string.IsNullOrWhiteSpace(meal.strMeasure20))
+            {
+                Ingredients.Add($"{meal.strMeasure20} - {meal.strIngredient20}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error in MealDetailsPage/AddIngredients => {ex.Message}");
+        }
+    }
+    #endregion
+}
