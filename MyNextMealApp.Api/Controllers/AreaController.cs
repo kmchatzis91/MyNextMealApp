@@ -23,7 +23,7 @@ namespace MyNextMealApp.Api.Controllers
         [Route("GetAreas")]
         [ProducesResponseType(typeof(RootArea), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<List<Area>> GetCategories(CancellationToken cancellationToken = default)
+        public async Task<List<Area>> GetAreas(CancellationToken cancellationToken = default)
         {
             try
             {
